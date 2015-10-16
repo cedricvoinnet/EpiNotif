@@ -24,6 +24,7 @@ usage(){
 verif(){
   error=false
   hash jq 2>/dev/null || { error=true; echo -e >&2 "This script need jq but it's not installed.\n\t\tYou must install jq package first."; }
+  hash curl 2>/dev/null || { error=true; echo -e >&2 "This script need curl but it's not installed.\n\t\tYou must install curl package first."; }
   hash notify-send 2>/dev/null || { error=true; echo -e >&2 "This script need notify-send but it's not installed.\n\t\tYou must install notify-osd package first."; }
   [[ $error == true ]] && echo -e "Abort." && exit 1
 }
