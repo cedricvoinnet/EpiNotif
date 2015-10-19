@@ -4,8 +4,7 @@ NAME="EpiNotif"
 LOGIN=""
 PASS=""
 DATE=`date +%d/%m/%Y`
-HOME=$(echo "/home/`whoami`")
-HOME="$HOME/.EpiNotif"
+HOME=${HOME}/.EpiNotif
 [[ -d "$HOME" ]] || mkdir "$HOME"
 ENC_SAVE=$(echo "$HOME/.enc")
 DEC_SAVE=$(echo "$HOME/.dec")
