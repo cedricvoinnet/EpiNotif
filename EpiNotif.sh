@@ -63,9 +63,9 @@ get_today_activity(){
   ret=$(echo $curl_ret | jq ".[]" 2>/dev/null)
   [[ $ret ]] || { alert "Wrong credentials"; exit 1; }
   ret=$(echo $ret | jq ".title, .timeline_start, .date_inscription")
-  ret=$(echo "$ret" | tr "\n" "°")
+  ret=$(echo "$ret" | tr "\n" "^")
 
-  IFS='°'
+  IFS='^'
   tab=($ret)
   unset IFS
 
@@ -76,7 +76,11 @@ get_today_activity(){
     date=$(echo ${tab[$(($i+1))]} | cut -d ',' -f 1 | sed 's/\"//g')
     hour=$(echo ${tab[$(($i+1))]} | cut -d ',' -f 2 | sed 's/[\"\ ]//g')
     register=$(echo ${tab[$(($i+2))]} | sed 's/\"//g')
-    [[ "$date" == "$DATE" ]] && [[ "$register" == false ]] && ([[ "$hour" > `date +%H:%M` ]] || [[ "$hour" == `date +%H:%M` ]]) && echo "$hour : $title" >> "$TMP"
+    if [[ "$date" == "$DATE" ]] && [[ "$register" == false ]]; then
+      if [[ "$hour" > `date +%H:%M` ]] || [[ "$hour" == `date +%H:%M` ]];then
+        echo "$hour : $title" >> "$TMP"
+      fi
+    fi
     i=$(($i+3))
   done
 
